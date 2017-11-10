@@ -29,10 +29,10 @@
     "chalk": "~1.0.0",
     "commander": "~2.7.1",
     "moment": "~2.10.2",
-    "thresher": "^0.1.11",
+    "sanitize-filename": "1.6.0",
+    "thresher": "github:ryanberckmans/thresher",
     "which": "~1.0.5",
-    "winston": "~1.0.0",
-    "sanitize-filename": "1.6.0"
+    "winston": "~1.0.0"
   },
   "bin": {
     "quickscrape": "bin/quickscrape.js"
