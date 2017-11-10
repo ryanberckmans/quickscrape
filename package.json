@@ -32,7 +32,7 @@
     "sanitize-filename": "1.6.0",
     "thresher": "https://github.com/tarrow/thresher.git",
     "which": "~1.0.5",
-    "winston": "~1.0.0"
+    "winston": "~2.4.0"
   },
   "bin": {
     "quickscrape": "bin/quickscrape.js"

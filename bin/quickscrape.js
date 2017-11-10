@@ -10,7 +10,6 @@ var program = require('commander')
   , ScraperBox = thresher.ScraperBox
   , Scraper = thresher.Scraper
   , ep = require('../lib/eventparse.js')
-  , loglevels = require('../lib/loglevels.js')
   , outformat = require('../lib/outformat.js')
   , sanitize = require('sanitize-filename');
 
@@ -44,29 +43,27 @@ program
           'info')
   .option('-f, --outformat <name>',
           'JSON format to transform results into (currently only bibjson)')
-  .option('-f, --logfile <filename>',
-          'save log to specified file in output directory as well as printing to terminal')
   .parse(process.argv);
 
 if (!process.argv.slice(2).length) {
   program.help();
 }
 
-// set up logging
-var allowedlevels = Object.keys(loglevels.levels);
-if (allowedlevels.indexOf(program.loglevel) == -1) {
-  winston.error('Loglevel must be one of: ',
-                'quiet, verbose, data, info, warn, error, debug');
+const allLogLevels = ['debug', 'info', 'warn', 'error']; // all the log levels we expect to be sent to winston's log
+if (allLogLevels.indexOf(program.loglevel) == -1) {
+  winston.error('Loglevel must be one of: debug, info, warn error');
   process.exit(1);
 }
 
 log = new (winston.Logger)({
-  transports: [], // logging destination set below
+  transports: [new (winston.transports.Console)({
+    stderrLevels: allLogLevels, // never log to stdout, we wish to reserve stdout for scraping results
+    timestamp: true,
+  })],
   level: program.loglevel,
-  levels: loglevels.levels,
-  colorize: true
+  colorize: true,
 });
-winston.addColors(loglevels.colors);
+log.info('logging to stderr');
 
 // have to do this before changing directory
 if (program.scraper) program.scraper = path.resolve(program.scraper)
@@ -79,19 +76,6 @@ if (!fs.existsSync(program.output)) {
 }
 process.chdir(program.output);
 tld = process.cwd();
-
-if (program.hasOwnProperty('logfile')) {
-  log.add(winston.transports.File, {
-    filename: program.logfile,
-  });
-  log.info('logging to ' + program.logfile);
-} else {
-  // Log to stdout if and only if logfile unspecified
-  log.add(winston.transports.Console, {
-    colorize: true,
-  });
-  log.info('logging to stdout');
-}
 
 // verify arguments
 if (program.scraper && program.scraperdir) {
