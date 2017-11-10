@@ -61,11 +61,7 @@ if (allowedlevels.indexOf(program.loglevel) == -1) {
 }
 
 log = new (winston.Logger)({
-  transports: [new winston.transports.Console({
-    level: program.loglevel,
-    levels: loglevels.levels,
-    colorize: true
-  })],
+  transports: [], // logging destination set below
   level: program.loglevel,
   levels: loglevels.levels,
   colorize: true
@@ -87,9 +83,14 @@ tld = process.cwd();
 if (program.hasOwnProperty('logfile')) {
   log.add(winston.transports.File, {
     filename: program.logfile,
-    level: 'debug'
   });
-  log.info('Saving logs to ./' + program.output + '/' + program.logfile);
+  log.info('logging to ' + program.logfile);
+} else {
+  // Log to stdout if and only if logfile unspecified
+  log.add(winston.transports.Console, {
+    colorize: true,
+  });
+  log.info('logging to stdout');
 }
 
 // verify arguments
