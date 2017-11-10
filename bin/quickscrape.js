@@ -31,6 +31,8 @@ program
           'where to output results ' +
           '(directory will be created if it doesn\'t exist',
           'output')
+  .option('-t, --stdoutresults',
+          'also write results.json to stdout (output directory unmodified)')
   .option('-n, --numberdirs',
           'use a number instead of the URL to name output subdirectories')
   .option('-i, --ratelimit <int>',
@@ -238,8 +240,13 @@ var processUrl = function(url) {
     log.info('URL processed: captured ' + (nresults - capturesFailed) + '/' +
              nresults + ' elements (' + capturesFailed + ' captures failed)');
     outfile = 'results.json'
-    log.debug('writing results to file:', outfile)
-    fs.writeFileSync(outfile, JSON.stringify(structured, undefined, 2));
+    outputString = JSON.stringify(structured, undefined, 2);
+    log.debug('writing results to file:', outfile);
+    fs.writeFileSync(outfile, outputString);
+    if (program.stdoutresults) {
+      log.debug('also writing results to stdout');
+      process.stdout.write(outputString);
+    }
     // write out any extra formats
     if (program.outformat) {
       outformat.format(program.outformat, structured);
