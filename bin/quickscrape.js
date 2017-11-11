@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// to facilitate parallelization in shell scripting, set stdout blocking
+// to true so that writes to stdout are immediately available downstream.
+process.stdout._handle.setBlocking(true);
+
 var program = require('commander')
   , fs = require('fs')
   , winston = require('winston')
