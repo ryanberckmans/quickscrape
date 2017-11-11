@@ -243,12 +243,15 @@ var processUrl = function(url) {
     log.info('URL processed: captured ' + (nresults - capturesFailed) + '/' +
              nresults + ' elements (' + capturesFailed + ' captures failed)');
     outfile = 'results.json'
-    outputString = JSON.stringify(structured, undefined, 2);
+    outputString = JSON.stringify(structured);
+    log.debug('unstructured result:', JSON.stringify(result));
+    log.debug('structured result:', outputString);
     log.debug('writing results to file:', outfile);
     fs.writeFileSync(outfile, outputString);
     if (program.stdoutresults) {
       log.debug('also writing results to stdout');
       process.stdout.write(outputString);
+      process.stdout.write('\n'); // newline so that there's one results.json per line, facilitating xargs
     }
     // write out any extra formats
     if (program.outformat) {
