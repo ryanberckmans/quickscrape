@@ -67,6 +67,14 @@ log = new (winston.Logger)({
 });
 log.info('logging to stderr');
 
+if (!(program.url || program.urllist) || (program.url && program.urllist)) {
+  log.error('You must provide a URL xor list of URLs to scrape');
+  process.exit(1);
+}
+
+urllist = program.url ? [program.url] : loadUrls(program.urllist);
+log.info('urls to scrape:', urllist.length);
+
 // have to do this before changing directory
 if (program.scraper) program.scraper = path.resolve(program.scraper)
 if (program.scraperdir) program.scraperdir = path.resolve(program.scraperdir)
@@ -82,11 +90,6 @@ tld = process.cwd();
 // verify arguments
 if (program.scraper && program.scraperdir) {
   log.error('Please use either --scraper or --scraperdir, not both');
-  process.exit(1);
-}
-
-if (!(program.url || program.urllist)) {
-  log.error('You must provide a URL or list of URLs to scrape');
   process.exit(1);
 }
 
@@ -106,7 +109,7 @@ log.info('quickscrape ' + QSVERSION + ' launched with...');
 if (program.url) {
   log.info('- URL: ' + program.url);
 } else {
-  log.info('- URLs from file: ' + program.urls);
+  log.info('- URLs from file: ' + program.urllist);
 }
 if (program.scraper) {
   log.info('- Scraper:', program.scraper);
@@ -142,7 +145,7 @@ if (program.scraper) {
 }
 
 // load list of URLs from a file
-var loadUrls = function(path) {
+function loadUrls(path) {
   var list = fs.readFileSync(path, {
     encoding: 'utf8'
   });
@@ -152,9 +155,6 @@ var loadUrls = function(path) {
     return x.length > 0;
   });
 }
-
-urllist = program.url ? [program.url] : loadUrls(program.urllist);
-log.info('urls to scrape:', urllist.length);
 
 // this is the callback we pass to the scraper, so the program
 // can exit when all asynchronous file and download tasks have finished
