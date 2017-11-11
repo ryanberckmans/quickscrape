@@ -159,8 +159,11 @@ function loadUrls(path) {
 // this is the callback we pass to the scraper, so the program
 // can exit when all asynchronous file and download tasks have finished
 var finish = function() {
-  log.info('all tasks completed');
-  process.exit(0);
+  // delay exit to allow final URL to complete processing and I/O
+  setTimeout(() => {
+    log.info('all tasks completed');
+    process.exit(0);
+  }, 3000);
 }
 
 // set up crude rate-limiting
