@@ -1,19 +1,19 @@
 {
   "name": "quickscrape",
-  "description": "A command line scraping tool for the modern web",
+  "description": "A fork of ContentMine/quickscape optimized for shell scripts",
   "version": "0.5.0",
-  "homepage": "https://github.com/ContentMine/quickscrape",
+  "homepage": "https://github.com/ryanberckmans/quickscrape",
   "author": {
-    "name": "Richard Smith-Unna",
-    "email": "rds45@cam.ac.uk",
-    "url": "http://contentmine.org"
+    "name": "Ryan Berckmans",
+    "email": "ryanberckmans@gmail.com",
+    "url": "https://github.com/ryanberckmans"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ContentMine/quickscrape.git"
+    "url": "https://github.com/ryanberckmans/quickscrape.git"
   },
   "bugs": {
-    "url": "https://github.com/ContentMine/quickscrape/issues"
+    "url": "https://github.com/ryanberckmans/quickscrape/issues"
   },
   "license": "MIT",
   "main": "lib/quickscrape",
@@ -30,7 +30,7 @@
     "commander": "~2.7.1",
     "moment": "~2.10.2",
     "sanitize-filename": "1.6.0",
-    "thresher": "https://github.com/tarrow/thresher.git",
+    "thresher": "https://github.com/tarrow/thresher.git#f0d78ce0acb09782c47ce3e2076510f9d53499e0",
     "which": "~1.0.5",
     "winston": "~2.4.0"
   },

@@ -2348,7 +2348,7 @@ tar-stream@^1.1.1:
     readable-stream "^2.0.0"
     xtend "^4.0.0"
 
-"thresher@https://github.com/tarrow/thresher.git":
+"thresher@https://github.com/tarrow/thresher.git#f0d78ce0acb09782c47ce3e2076510f9d53499e0":
   version "0.1.11"
   resolved "https://github.com/tarrow/thresher.git#f0d78ce0acb09782c47ce3e2076510f9d53499e0"
   dependencies:
