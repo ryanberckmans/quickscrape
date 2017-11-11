@@ -1,7 +1,7 @@
 {
   "name": "quickscrape",
   "description": "A fork of ContentMine/quickscape optimized for shell scripts",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "https://github.com/ryanberckmans/quickscrape",
   "author": {
     "name": "Ryan Berckmans",
