@@ -196,9 +196,11 @@ var checkForNext = function() {
 }
 
 // process a URL
-var i = 0
+let globalCurrentUrl; // Hack to easily re-use current URL in another function
+var i = 0;
 var processUrl = function(url) {
-  i += 1
+  globalCurrentUrl = url;
+  i += 1;
   done = false;
   log.info('processing URL:', url);
 
@@ -239,9 +241,24 @@ var processUrl = function(url) {
   });
 
   t.once('result', function(result, structured) {
+    const url = globalCurrentUrl;
+
     var nresults = Object.keys(result).length
     log.info('URL processed: captured ' + (nresults - capturesFailed) + '/' +
              nresults + ' elements (' + capturesFailed + ' captures failed)');
+
+    // Add url to results so it's easily available downstream
+    if (result.hasOwnProperty('url')) {
+      console.error("expected unstructured result to not have prop 'url' for url", url);
+    } else {
+      result.url = url;
+    }
+    if (structured.hasOwnProperty('url')) {
+      console.error("expected structured result to not have prop 'url' for url", url);
+    } else {
+      structured.url = { value: url };
+    }
+
     outfile = 'results.json'
     outputString = JSON.stringify(structured);
     log.debug('unstructured result:', JSON.stringify(result));
