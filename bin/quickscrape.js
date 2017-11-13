@@ -2,7 +2,10 @@
 
 // to facilitate parallelization in shell scripting, set stdout blocking
 // to true so that writes to stdout are immediately available downstream.
-process.stdout._handle.setBlocking(true);
+try {
+  // _handle may not be defined, e.g. if stdout is redirected to a file
+  process.stdout._handle.setBlocking(true);
+} catch (e) {}
 
 var program = require('commander')
   , fs = require('fs')
